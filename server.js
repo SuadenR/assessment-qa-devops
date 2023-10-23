@@ -2,6 +2,7 @@ const express = require("express");
 const bots = require("./src/botsData");
 const shuffle = require("./src/shuffle");
 
+
 var Rollbar = require('rollbar')
 
 var rollbar = new Rollbar({
@@ -17,7 +18,7 @@ const playerRecord = {
 const app = express();
 
 app.use(express.json());
-app.use(express.static('./public'))
+app.use(express.static(`${__dirname}/public`))
 
 // Add up the total health of all the robots
 const calculateTotalHealth = (robots) =>
