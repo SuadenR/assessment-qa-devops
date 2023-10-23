@@ -17,7 +17,8 @@ describe("Duel Duo tests", () => {
   });
   test("Draw button displays the correct div", async () => {
     await driver.get("http://localhost:8000");
-    const isDiv = await driver.findElement(By.id(('draw'))).click()
+    await driver.findElement(By.id(('draw'))).click()
+    const isDiv = await driver.wait(until.elementsLocated('div'))
     expect(isDiv).toBe('div')
   })
 });

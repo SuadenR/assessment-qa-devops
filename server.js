@@ -2,6 +2,14 @@ const express = require("express");
 const bots = require("./src/botsData");
 const shuffle = require("./src/shuffle");
 
+var Rollbar = require('rollbar')
+
+var rollbar = new Rollbar({
+  accessToken: 'e7df398d13914a649e0ee11144b70d46',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+});
+
 const playerRecord = {
   wins: 0,
   losses: 0,
@@ -37,10 +45,11 @@ const calculateHealthAfterAttack = ({ playerDuo, compDuo }) => {
 };
 
 app.get("/api/robots", (req, res) => {
-  try {
+      try {
     res.status(200).send(botsArr);
   } catch (error) {
     console.error("ERROR GETTING BOTS", error);
+    rollbar.error("There is an issue with the bots button!");
     res.sendStatus(400);
   }
 });
@@ -48,6 +57,7 @@ app.get("/api/robots", (req, res) => {
 app.get("/api/robots/shuffled", (req, res) => {
   try {
     let shuffled = shuffle(bots);
+    rollbar.info("Someone has requested the shuffled bots");
     res.status(200).send(shuffled);
   } catch (error) {
     console.error("ERROR GETTING SHUFFLED BOTS", error);
@@ -67,6 +77,7 @@ app.post("/api/duel", (req, res) => {
     // comparing the total health to determine a winner
     if (compHealth > playerHealth) {
       playerRecord.losses += 1;
+      rollbar.info("Someone has finished a duel");
       res.status(200).send("You lost!");
     } else {
       playerRecord.losses += 1;
@@ -81,6 +92,7 @@ app.post("/api/duel", (req, res) => {
 app.get("/api/player", (req, res) => {
   try {
     res.status(200).send(playerRecord);
+    rollbar.info("Someone has requested their player stats");
   } catch (error) {
     console.log("ERROR GETTING PLAYER STATS", error);
     res.sendStatus(400);

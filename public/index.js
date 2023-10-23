@@ -13,6 +13,8 @@ const chooseHeader = document.querySelector("#choose-header");
 const yourDuoHeader = document.querySelector("#your-duo-header");
 const compDuoHeader = document.querySelector("#comp-duo-header");
 
+
+
 let choices = [];
 let compDuo = [];
 let playerDuo = [];
@@ -24,7 +26,7 @@ yourDuoHeader.classList.add("hide");
 compDuoHeader.classList.add("hide");
 
 const makeRobotChoiceCard = (bot) => {
-  return `
+    return `
         <div class="bot-card outline">
         <img src='${bot.imgAddress}' alt='${bot.name}'/>
         <h3>${bot.name}</h3>
@@ -162,6 +164,7 @@ const reset = () => {
 
 const getPlayerStats = () => {
   axios.get("/api/player").then(({ data: { wins, losses } }) => {
+
     winsText.textContent = `Wins: ${wins}`;
     lossesTest.textContent = `Losses: ${losses}`;
   });
